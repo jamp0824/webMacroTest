@@ -6,12 +6,12 @@ import java.awt.datatransfer.StringSelection;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.Select;
 
 public class SeleniumTest {
 
@@ -89,31 +89,76 @@ public class SeleniumTest {
 			}
 			driver.get(base_url);
 //			driver.get(test_url);
-//			System.out.println(driver.getPageSource());
+			System.out.println(driver.getPageSource());
 			 boolean displayed = false;
 			 String buyButton = "//*[@class=\"OgETmrvExa N=a:pcs.buy\"]/a[1]";
-			    List<WebElement> element = driver.findElements(By.xpath(buyButton));
+			 String select1 = "//*[@class=\"bd_zxkRR\"]/li[1]/a[1]";
+			 String select2 = "//*[@class=\"bd_zxkRR\"]/li[2]/a[1]";
+			 String select3 = "//*[@class=\"bd_zxkRR\"]/li[3]/a[1]";
+			 
+			    List<WebElement> buyElement = driver.findElements(By.xpath(buyButton));
+//			     driver.findElements(By.xpath(buyButton));
+//			     driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
+//			    WebElement stockElement1 = driver.findElement(By.xpath(select1));
+//			    WebElement stockElement2 = driver.findElement(By.xpath(select2));
+//			    WebElement stockElement3 = driver.findElement(By.xpath(select3));
 //			   
 //			    driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
 //			    System.out.println("12312321322222222222"+driver.findElement(By.xpath("//*[@class=\"bd_zxkRR\"]/li[1]")).getText());
 //			    driver.findElement(By.xpath("//*[@class=\"bd_zxkRR\"]/li[1]")).click();
 			   //10분 간 refresh용 
+//			 <a href="javascript:void(0)" class="bd_3iRne N=a:pcs.opone" role="option">Blue(2월11일 발송예정) (품절)</a>
 			    int refreshCount = 20000;
-			    System.out.println("element.size()"+element.size());
+			    System.out.println("buyElement.size()"+buyElement.size());
+//			    System.out.println("stockElement.size()"+stockElement.size());
 			    for (int i = 0; i < refreshCount; i++) {    
-			        if (element.size() > 0) {     
-			            // Do the operation here on the element
-			        	System.out.println("111111111111111");
-						driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
-					    driver.findElement(By.xpath("//*[@class=\"bd_zxkRR\"]/li[1]/a[1]")).click();			
-						driver.findElement(By.xpath(buyButton)).click();
-						i=20000;
-			        } else {  
-			        	System.out.println("222222222222222");
-			            driver.navigate().refresh();    
-			        }     
+			    	driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
+			    	Thread.sleep(2000);
+			    	
+			    	if(!driver.findElement(By.xpath(select1)).getText().contains("품절")) {
+			    		System.out.println(driver.findElement(By.xpath(select1)).getText()+" with " +i+ "rotation");
+			    		i = 20000;
+			    		driver.findElement(By.xpath(select1)).click();
+			    	}
+			    	else if(!driver.findElement(By.xpath(select2)).getText().contains("품절")) {
+			    		System.out.println(driver.findElement(By.xpath(select2)).getText()+" with " +i+ "rotation");
+			    		i = 20000;
+			    		driver.findElement(By.xpath(select2)).click();
+			    	}
+			    	else if(!driver.findElement(By.xpath(select3)).getText().contains("품절")) {
+			    		System.out.println(driver.findElement(By.xpath(select3)).getText() +" with " +i+ "rotation");
+			    		i = 20000;
+			    		driver.findElement(By.xpath(select3)).click();
+			    	}
+			    	else {
+			    		 driver.navigate().refresh();  
+			    	}			    	
+			  			    	
+//			        if (buyElement.size() > 0) {     
+//			            // Do the operation here on the element
+//			        	System.out.println("111111111111111");
+////						driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
+//					    driver.findElement(By.xpath("//*[@class=\"bd_zxkRR\"]/li[3]/a[1]")).click();			
+//						driver.findElement(By.xpath(buyButton)).click();
+//						i=20000;
+//			        } else {
+//			        	Thread.sleep(2000);
+//			        	System.out.println("times to rotate"+i);
+//			            driver.navigate().refresh();    
+//			        }     
 			    }
 			Thread.sleep(2000);
+			driver.findElement(By.xpath(buyButton)).click();
+			Thread.sleep(2000);
+//			driver.findElement(By.xpath("//*[@class=\"_click(nmp.front.order.order_sheet.changePaymentTab(generalPayments)) _stopDefault\"]")).click();
+			WebElement generalPayment = driver.findElement(By.id("generalPaymentsRadio"));
+			JavascriptExecutor executor = (JavascriptExecutor)driver;
+			executor.executeScript("arguments[0].click();", generalPayment);
+			WebElement pay20 = driver.findElement(By.id("pay20"));
+			executor.executeScript("arguments[0].click();", pay20);
+//			driver.findElement(By.id("skipPaymentMethodSelectBox")).click();
+//			WebElement virtualAccount = driver.findElement(By.xpath("//*[@value='VIRTUAL_ACCOUNT']"));
+//			executor.executeScript("arguments[0].click();", virtualAccount);
 			
 			driver.findElement(By.xpath("//*[@class=\"btn_payment _click(nmp.front.order.order_sheet.account()) _stopDefault _doPayButton\"]")).click();
 			
