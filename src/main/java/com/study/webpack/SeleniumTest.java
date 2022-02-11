@@ -45,12 +45,7 @@ public class SeleniumTest {
 		
 		ChromeOptions options = new ChromeOptions();
 		options.setCapability("ignoreProtectedModeSettings", true);
-		
-//		options.addArguments("--headless", "--disable-gpu","-no-sandbox");
-//		options.addArguments("window-size=1920x1080");
-//		options.addArguments("user-agent= Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36");
-//		options.addArguments("lang=ko_KR");
-		
+				
 		driver = new ChromeDriver(options);
 		base_url = "https://smartstore.naver.com/nosiboo/products/4152944658#scrollY=29212.80078125"; 
 		test_url = "https://smartstore.naver.com/nosiboo/products/5136127592";
@@ -95,70 +90,48 @@ public class SeleniumTest {
 			 String select1 = "//*[@class=\"bd_zxkRR\"]/li[1]/a[1]";
 			 String select2 = "//*[@class=\"bd_zxkRR\"]/li[2]/a[1]";
 			 String select3 = "//*[@class=\"bd_zxkRR\"]/li[3]/a[1]";
-			 
+			 String overflow = "//*[@class=\"_2BQ-WF2QUb\"]/strong[1]";
 			    List<WebElement> buyElement = driver.findElements(By.xpath(buyButton));
-//			     driver.findElements(By.xpath(buyButton));
-//			     driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
-//			    WebElement stockElement1 = driver.findElement(By.xpath(select1));
-//			    WebElement stockElement2 = driver.findElement(By.xpath(select2));
-//			    WebElement stockElement3 = driver.findElement(By.xpath(select3));
-//			   
-//			    driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
-//			    System.out.println("12312321322222222222"+driver.findElement(By.xpath("//*[@class=\"bd_zxkRR\"]/li[1]")).getText());
-//			    driver.findElement(By.xpath("//*[@class=\"bd_zxkRR\"]/li[1]")).click();
-			   //10분 간 refresh용 
-//			 <a href="javascript:void(0)" class="bd_3iRne N=a:pcs.opone" role="option">Blue(2월11일 발송예정) (품절)</a>
+//			    
 			    int refreshCount = 20000;
-			    System.out.println("buyElement.size()"+buyElement.size());
-//			    System.out.println("stockElement.size()"+stockElement.size());
-			    for (int i = 0; i < refreshCount; i++) {    
-			    	driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
-			    	Thread.sleep(2000);
-			    	
-			    	if(!driver.findElement(By.xpath(select1)).getText().contains("품절")) {
-			    		System.out.println(driver.findElement(By.xpath(select1)).getText()+" with " +i+ "rotation");
-			    		i = 20000;
-			    		driver.findElement(By.xpath(select1)).click();
-			    	}
-			    	else if(!driver.findElement(By.xpath(select2)).getText().contains("품절")) {
-			    		System.out.println(driver.findElement(By.xpath(select2)).getText()+" with " +i+ "rotation");
-			    		i = 20000;
-			    		driver.findElement(By.xpath(select2)).click();
-			    	}
-			    	else if(!driver.findElement(By.xpath(select3)).getText().contains("품절")) {
-			    		System.out.println(driver.findElement(By.xpath(select3)).getText() +" with " +i+ "rotation");
-			    		i = 20000;
-			    		driver.findElement(By.xpath(select3)).click();
+			    for (int i = 0; i < refreshCount; i++) { 
+			    	if(driver.findElement(By.xpath(overflow)).getText().contains("잠시 후 다시 시도해주세요")) {
+			    		driver.navigate().refresh();
 			    	}
 			    	else {
-			    		 driver.navigate().refresh();  
-			    	}			    	
-			  			    	
-//			        if (buyElement.size() > 0) {     
-//			            // Do the operation here on the element
-//			        	System.out.println("111111111111111");
-////						driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
-//					    driver.findElement(By.xpath("//*[@class=\"bd_zxkRR\"]/li[3]/a[1]")).click();			
-//						driver.findElement(By.xpath(buyButton)).click();
-//						i=20000;
-//			        } else {
-//			        	Thread.sleep(2000);
-//			        	System.out.println("times to rotate"+i);
-//			            driver.navigate().refresh();    
-//			        }     
+				    	driver.findElement(By.xpath("//*[@class=\"bd_3hLoi\"]/a[1]")).click();
+				    	Thread.sleep(2000);
+				    	
+				    	if(!driver.findElement(By.xpath(select1)).getText().contains("품절")) {
+				    		System.out.println(driver.findElement(By.xpath(select1)).getText()+" with " +i+ "rotation");
+				    		i = 20000;
+				    		driver.findElement(By.xpath(select1)).click();
+				    	}
+				    	else if(!driver.findElement(By.xpath(select2)).getText().contains("품절")) {
+				    		System.out.println(driver.findElement(By.xpath(select2)).getText()+" with " +i+ "rotation");
+				    		i = 20000;
+				    		driver.findElement(By.xpath(select2)).click();
+				    	}
+				    	else if(!driver.findElement(By.xpath(select3)).getText().contains("품절")) {
+				    		System.out.println(driver.findElement(By.xpath(select3)).getText() +" with " +i+ "rotation");
+				    		i = 20000;
+				    		driver.findElement(By.xpath(select3)).click();
+				    	}
+				    	else {
+				    		 driver.navigate().refresh();  
+				    	}			    	
+			    	}	    	
+//			        
 			    }
 			Thread.sleep(2000);
 			driver.findElement(By.xpath(buyButton)).click();
 			Thread.sleep(2000);
-//			driver.findElement(By.xpath("//*[@class=\"_click(nmp.front.order.order_sheet.changePaymentTab(generalPayments)) _stopDefault\"]")).click();
 			WebElement generalPayment = driver.findElement(By.id("generalPaymentsRadio"));
 			JavascriptExecutor executor = (JavascriptExecutor)driver;
 			executor.executeScript("arguments[0].click();", generalPayment);
 			WebElement pay20 = driver.findElement(By.id("pay20"));
 			executor.executeScript("arguments[0].click();", pay20);
-//			driver.findElement(By.id("skipPaymentMethodSelectBox")).click();
-//			WebElement virtualAccount = driver.findElement(By.xpath("//*[@value='VIRTUAL_ACCOUNT']"));
-//			executor.executeScript("arguments[0].click();", virtualAccount);
+
 			
 			driver.findElement(By.xpath("//*[@class=\"btn_payment _click(nmp.front.order.order_sheet.account()) _stopDefault _doPayButton\"]")).click();
 			
